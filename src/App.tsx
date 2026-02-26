@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import PatientsPage from './pages/PatientsPage'
+import { LogOut } from 'lucide-react'
 
 function App() {
   const [supabaseStatus, setSupabaseStatus] = useState<string>('Comprobando Supabase...')
@@ -21,6 +22,10 @@ function App() {
     checkSupabase()
   }, [])
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+  }
+
   return (
     <div className="min-h-screen flex flex-col font-sans">
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center shadow-sm">
@@ -30,8 +35,18 @@ function App() {
           </div>
           <h1 className="text-xl font-semibold text-primary-dark">Helpita Pacientes</h1>
         </div>
-        <div className="text-sm font-medium px-3 py-1 bg-background text-primary-dark rounded-full border border-accent">
-          {supabaseStatus}
+        <div className="flex items-center gap-4">
+          <div className="text-sm font-medium px-3 py-1 bg-background text-primary-dark rounded-full border border-accent">
+            {supabaseStatus}
+          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-sm text-gray-600 hover:text-red-600 transition-colors px-3 py-2 rounded-md hover:bg-red-50"
+            title="Cerrar sesión de forma segura"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">Cerrar Sesión</span>
+          </button>
         </div>
       </header>
 

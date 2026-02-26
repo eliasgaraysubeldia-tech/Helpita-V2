@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { Search, Plus, Edit2, Archive } from 'lucide-react'
+import { Search, Plus, Edit2, Archive, MessageCircle, ExternalLink } from 'lucide-react'
 import PatientFormModal from '../components/PatientFormModal'
 
 export interface Patient {
@@ -123,8 +123,8 @@ export default function PatientsPage() {
                             <th className="px-6 py-3">Ni&ntilde;o / Edad</th>
                             <th className="px-6 py-3">Responsable</th>
                             <th className="px-6 py-3">Contacto</th>
-                            <th className="px-6 py-3">Est. Comercial</th>
-                            <th className="px-6 py-3">Est. Cl&iacute;nico</th>
+                            <th className="px-6 py-3">Estado Comercial</th>
+                            <th className="px-6 py-3">Estado Cl&iacute;nico</th>
                             <th className="px-6 py-3 text-right">Acciones</th>
                         </tr>
                     </thead>
@@ -164,7 +164,26 @@ export default function PatientsPage() {
                                             {patient.clinical_stage}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 flex justify-end gap-2">
+                                    <td className="px-6 py-4 flex justify-end gap-2 items-center">
+                                        {patient.responsible?.[0]?.phone && (
+                                            <a
+                                                href={`https://wa.me/${patient.responsible[0].phone.replace(/\D/g, '')}?text=Hola, te escribimos de HelpitaFono...`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="p-1.5 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-full transition-colors tooltip"
+                                                title="Enviar WhatsApp"
+                                            >
+                                                <MessageCircle className="w-4 h-4" />
+                                            </a>
+                                        )}
+                                        <button
+                                            onClick={() => alert(`El Portal de Padres para el paciente ${patient.child_full_name} se construirá en la siguiente fase y se integrará aquí.`)}
+                                            className="p-1.5 text-primary hover:text-primary-dark hover:bg-primary/10 rounded-full transition-colors tooltip"
+                                            title="Portal de Padres (Próximamente)"
+                                        >
+                                            <ExternalLink className="w-4 h-4" />
+                                        </button>
+                                        <div className="w-px h-4 bg-gray-200 mx-1"></div>
                                         <button
                                             onClick={() => openForm(patient)}
                                             className="p-1.5 text-gray-500 hover:text-primary transition-colors tooltip"
